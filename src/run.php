@@ -32,6 +32,8 @@ if (empty($config['parameters']['api_key'])) {
 				"https://syrup-testing.keboola.com/oauth/get/wr-dropbox/{$config['parameters']['credentials']}",
 				['X-StorageApi-Token' => $token]
 			);
+
+			var_dump($re);
 		} catch(\Guzzle\Http\Exception\RequestException $e) {
 			print "Failed retrieving token from OAuth API: " . $e->getMessage();
 			exit($e->getCode() ?: 1);
@@ -41,14 +43,17 @@ if (empty($config['parameters']['api_key'])) {
 		print "'api_key' or 'credentials' parameter is required";
 		exit(2);
 	}
+} else {
+	$apiKey = $config['parameters']['api_key'];
 }
+
 
 if (empty($config['storage']['input']['tables'])) {
 	print "No input data found!";
 	exit(1);
 }
 
-$client = new Client($config['parameters']['api_key'], "Keboola Dropbox Writer/0.1");
+$client = new Client($apiKey, "Keboola Dropbox Writer/0.1");
 
 $path = empty($config['parameters']['path_prefix']) ? "" : $config['parameters']['path_prefix'];
 
