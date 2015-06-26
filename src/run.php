@@ -28,7 +28,7 @@ if (empty($config['parameters']['api_key'])) {
 			}
 
 			$re = $guzzle->get(
-				OAUTH_API_URL . "/get/wr-dropbox/{$config['parameters']['credentials']}",
+				OAUTH_API_URL . "/credentials/wr-dropbox/{$config['parameters']['credentials']}",
 				['X-StorageApi-Token' => $token]
 			)->send();
 
