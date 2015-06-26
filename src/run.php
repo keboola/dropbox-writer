@@ -33,7 +33,7 @@ if (empty($config['parameters']['api_key'])) {
 			)->send();
 
 			// TODO check for token in response!
-			$apiKey = $re->json()['access_token'];
+			$apiKey = json_decode($re->json()['data'])->access_token;
 		} catch(\Guzzle\Http\Exception\RequestException $e) {
 			print "Failed retrieving token from OAuth API: " . $e->getMessage();
 			exit(1);
@@ -56,7 +56,7 @@ $client = new Client($apiKey, "Keboola Dropbox Writer/0.1");
 
 $path = empty($config['parameters']['path_prefix']) ? "" : $config['parameters']['path_prefix'];
 
-$mode = (!empty($config['parameters']['mode']) && $config['parameters']['mode'] == 'rewrite') ? WriteMode::force() : WriteMode::add(); // TODO configurable
+$mode = (!empty($config['parameters']['mode']) && $config['parameters']['mode'] == 'rewrite') ? WriteMode::force() : WriteMode::add();
 
 foreach($config['storage']['input']['tables'] as $table) {
 // TODO check if destination ain't empty
