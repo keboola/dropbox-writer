@@ -16,10 +16,7 @@ if (!isset($arguments["data"])) {
 $config = Yaml::parse(file_get_contents($arguments["data"] . "/config.yml"));
 
 if (empty($config['parameters']['api_key'])) {
-	print "Missing configuration parameter 'api_key'!";
-
 	if (!empty($config['parameters']['credentials'])) {
-
 		$guzzle = new Guzzle;
 		try {
 			$token = getenv('KBC_TOKEN');
@@ -31,14 +28,14 @@ if (empty($config['parameters']['api_key'])) {
 			$re = $guzzle->get(
 				"https://syrup-testing.keboola.com/oauth/get/wr-dropbox/{$config['parameters']['credentials']}",
 				['X-StorageApi-Token' => $token]
-			);
+			)->send();
 
-			var_dump($re);
+			// TODO check for token in response!
+			$apiKey = $re->json()['access_token'];
 		} catch(\Guzzle\Http\Exception\RequestException $e) {
 			print "Failed retrieving token from OAuth API: " . $e->getMessage();
 			exit($e->getCode() ?: 1);
 		}
-
 	} else {
 		print "'api_key' or 'credentials' parameter is required";
 		exit(2);
