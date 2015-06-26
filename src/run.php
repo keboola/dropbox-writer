@@ -7,7 +7,7 @@ use Guzzle\Http\Client as Guzzle;
 
 require_once(dirname(__FILE__) . "/../vendor/autoload.php");
 
-const OAUTH_API_URL = "https://syrup-testing.keboola.com/oauth";
+const OAUTH_API_URL = "https://syrup.keboola.com/oauth";
 
 $arguments = getopt("d::", array("data::"));
 if (!isset($arguments["data"])) {
