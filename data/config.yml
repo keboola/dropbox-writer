@@ -1,6 +1,7 @@
 parameters:
   #api_key: FHGegoEF8RsAAAAAAAAE4-vhfF1AJpR8nkuIsNWoNDfgMMJ_7uopN_R-l0rRw_bi
   credentials: test
+  mode: rewrite
 
 storage:
   input:

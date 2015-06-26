@@ -7,6 +7,8 @@ use Guzzle\Http\Client as Guzzle;
 
 require_once(dirname(__FILE__) . "/../vendor/autoload.php");
 
+const OAUTH_API_URL = "https://syrup-testing.keboola.com/oauth";
+
 $arguments = getopt("d::", array("data::"));
 if (!isset($arguments["data"])) {
     print "Data folder not set.";
@@ -26,7 +28,7 @@ if (empty($config['parameters']['api_key'])) {
 			}
 
 			$re = $guzzle->get(
-				"https://syrup-testing.keboola.com/oauth/get/wr-dropbox/{$config['parameters']['credentials']}",
+				OAUTH_API_URL . "/get/wr-dropbox/{$config['parameters']['credentials']}",
 				['X-StorageApi-Token' => $token]
 			)->send();
 
@@ -54,7 +56,7 @@ $client = new Client($apiKey, "Keboola Dropbox Writer/0.1");
 
 $path = empty($config['parameters']['path_prefix']) ? "" : $config['parameters']['path_prefix'];
 
-$mode = WriteMode::add(); // TODO configurable
+$mode = (!empty($config['parameters']['mode']) && $config['parameters']['mode'] == 'rewrite') ? WriteMode::force() : WriteMode::add(); // TODO configurable
 
 foreach($config['storage']['input']['tables'] as $table) {
 // TODO check if destination ain't empty
