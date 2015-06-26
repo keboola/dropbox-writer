@@ -36,7 +36,7 @@ if (empty($config['parameters']['api_key'])) {
 			$apiKey = $re->json()['access_token'];
 		} catch(\Guzzle\Http\Exception\RequestException $e) {
 			print "Failed retrieving token from OAuth API: " . $e->getMessage();
-			exit($e->getCode() ?: 1);
+			exit(1);
 		}
 	} else {
 		print "'api_key' or 'credentials' parameter is required";
