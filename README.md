@@ -38,4 +38,4 @@ To generate an **api key** for Dropbox, use the [OAuth API](http://docs.oauth9.a
 
 ## Usage
 
-The writer is used with our [docker bundle](http://docs.kebooladocker.apiary.io/#reference/run/create-a-job/create-a-run-job). Use `wr-dropbox` in place of the **image** parameter ans the configuration as described above.
+The writer is meant to be used with our [docker bundle](http://docs.kebooladocker.apiary.io/#reference/run/create-a-job/create-a-run-job). Use `wr-dropbox` in place of the **image** parameter ans the configuration as described above.
