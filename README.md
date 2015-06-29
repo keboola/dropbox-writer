@@ -12,6 +12,7 @@ To generate an **api key** for Dropbox, use the [OAuth API](http://docs.oauth9.a
 - **parameters.credentials**: ID of the OAuth generated credentials. Either **credentials** or **api_key** is required.
 - **parameters.api_key**: Optionally, the api key can be set directly in the configuration, skipping the OAuth API key retrieval
 - **parameters.mode**: Setting to `rewrite` will force the file to be at the path specified in **destination**. If left empty, or set to another value, and the destination file already exists, the new one is appended by a number suffix.
+- **parameters.file_id_suffix**: If set to `true`, names of files from File Upload will be suffixed by their file ID
 
 #### Example
 

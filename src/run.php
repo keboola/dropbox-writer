@@ -61,7 +61,17 @@ foreach (new RecursiveIteratorIterator($dir) as $filename => $file) {
 			&& file_exists($filename . '.manifest')
 		) {
 			$manifest = Yaml::parse(file_get_contents($filename . '.manifest'));
-			$name = $manifest['name'];
+			if (!empty($manifest['name'])) {
+				$name = $manifest['name'];
+			} else {
+				print "Failed getting file name from manifest. Using filename instead.";
+				$name = $file->getFilename();
+			}
+
+			if (!empty($config['parameters']['file_id_suffix']) && !empty($manifest['id'])) {
+				$name .= '_' . $manifest['id'];
+			}
+
 		} else {
 			$name = $file->getFilename();
 		}
