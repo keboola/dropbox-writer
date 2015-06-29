@@ -11,8 +11,8 @@ const OAUTH_API_URL = "https://syrup.keboola.com/oauth";
 
 $arguments = getopt("d::", array("data::"));
 if (!isset($arguments["data"])) {
-    print "Data folder not set.";
-    exit(1);
+	print "Data folder not set.";
+	exit(1);
 }
 
 $config = Yaml::parse(file_get_contents($arguments["data"] . "/config.yml"));
@@ -46,31 +46,35 @@ if (empty($config['parameters']['api_key'])) {
 	$apiKey = $config['parameters']['api_key'];
 }
 
-
-if (empty($config['storage']['input']['tables'])) {
-	print "No input data found!";
-	exit(1);
-}
-
 $client = new Client($apiKey, "Keboola Dropbox Writer/0.1");
 
 $path = empty($config['parameters']['path_prefix']) ? "" : $config['parameters']['path_prefix'];
 
 $mode = (!empty($config['parameters']['mode']) && $config['parameters']['mode'] == 'rewrite') ? WriteMode::force() : WriteMode::add();
 
-foreach($config['storage']['input']['tables'] as $table) {
-// TODO check if destination ain't empty
-	$result = $client->uploadFile(
-		'/' . $path . $table['destination'],
-		$mode,
-		fopen($arguments["data"] . "/in/tables/{$table['destination']}", 'r')
-	);
-	print "Uploaded to {$result['path']}" . PHP_EOL;
+$dir = new RecursiveDirectoryIterator($arguments['data'] . "/in");
+foreach (new RecursiveIteratorIterator($dir) as $filename => $file) {
+	if ('.' != $file->getFilename() && '..' != $file->getFilename()
+		&& '.manifest' != substr($file->getFilename(), -9)
+	) {
+		if (false !== strpos($filename, '/in/files/')
+			&& file_exists($filename . '.manifest')
+		) {
+			$manifest = Yaml::parse(file_get_contents($filename . '.manifest'));
+			$name = $manifest['name'];
+		} else {
+			$name = $file->getFilename();
+		}
+
+		$dst =  '/' . $path . $name;
+
+		$result = $client->uploadFile(
+			$dst,
+			$mode,
+			fopen($filename, 'r')
+		);
+		print "Uploaded to {$result['path']}" . PHP_EOL;
+	}
 }
 
-// if (isset($config["storage"]["input"]["tables"][0]["destination"])) {
-//     $sourceFile  = $config["storage"]["input"]["tables"][0]["destination"];
-// } else {
-//     $sourceFile = $config["storage"]["input"]["tables"][0]["source"];
-// }
 exit(0);
