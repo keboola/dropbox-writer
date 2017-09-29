@@ -1,9 +1,11 @@
 <?php
 
 use Symfony\Component\Yaml\Yaml;
-use Dropbox\Client,
-	Dropbox\WriteMode;
+use Alorel\Dropbox\Operation\Files\Upload;
+use Alorel\Dropbox\Options\Builder\UploadOptions;
+use Alorel\Dropbox\Parameters\WriteMode;
 use Guzzle\Http\Client as Guzzle;
+use GuzzleHttp\Exception\ClientException;
 
 require_once(dirname(__FILE__) . "/../vendor/autoload.php");
 
@@ -46,11 +48,15 @@ if (empty($config['parameters']['api_key'])) {
 	$apiKey = $config['parameters']['api_key'];
 }
 
-$client = new Client($apiKey, "Keboola Dropbox Writer/0.1");
+// $client = new Client($apiKey, "Keboola Dropbox Writer/0.1");
+
+
 
 $path = empty($config['parameters']['path_prefix']) ? "" : $config['parameters']['path_prefix'];
 
-$mode = (!empty($config['parameters']['mode']) && $config['parameters']['mode'] == 'rewrite') ? WriteMode::force() : WriteMode::add();
+$options = new UploadOptions();
+$mode = (!empty($config['parameters']['mode']) && $config['parameters']['mode'] == 'rewrite') ? $options->setWriteMode(WriteMode::overwrite()) : $options->setWriteMode(WriteMode::add());
+$client2 = new Upload(false, $apiKey);
 
 $dir = new RecursiveDirectoryIterator($arguments['data'] . "/in");
 foreach (new RecursiveIteratorIterator($dir) as $filename => $file) {
@@ -78,12 +84,17 @@ foreach (new RecursiveIteratorIterator($dir) as $filename => $file) {
 
 		$dst =  '/' . $path . $name;
 
-		$result = $client->uploadFile(
-			$dst,
-			$mode,
-			fopen($filename, 'r')
-		);
-		print "Uploaded to {$result['path']}" . PHP_EOL;
+		try {
+			$response = $client2->raw($dst, fopen($filename, 'r'));
+			print "{$name} uploaded" . PHP_EOL;
+		} catch (ClientException $e) {
+			$reason = "Unknown reason";
+			if ($e->hasResponse()) {
+				$reason = $e->getResponse()->getBody()->getContents();
+			}
+			print "Error uploading " . $name . " reason:" . $reason;
+			exit(1);
+		}
 	}
 }
 
