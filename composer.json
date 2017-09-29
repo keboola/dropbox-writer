@@ -5,7 +5,8 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/yaml": "~2.6.3",
-        "dropbox/dropbox-sdk": "1.1.5"
+        "dropbox/dropbox-sdk": "1.1.5",
+        "alorel/dropbox-v2-php": "^0.4.2"
     },
     "require-dev": {
         "phpunit/phpunit": "4.6.*",
