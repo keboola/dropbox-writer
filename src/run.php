@@ -54,8 +54,9 @@ if (empty($config['parameters']['api_key'])) {
 
 $path = empty($config['parameters']['path_prefix']) ? "" : $config['parameters']['path_prefix'];
 
-$options = new UploadOptions();
-$mode = (!empty($config['parameters']['mode']) && $config['parameters']['mode'] == 'rewrite') ? $options->setWriteMode(WriteMode::overwrite()) : $options->setWriteMode(WriteMode::add());
+$options = (!empty($config['parameters']['mode']) && $config['parameters']['mode'] == 'rewrite')
+	? (new UploadOptions())->setWriteMode(WriteMode::overwrite())
+	: (new UploadOptions())->setWriteMode(WriteMode::add())->setAutoRename(true);
 $client2 = new Upload(false, $apiKey);
 
 $dir = new RecursiveDirectoryIterator($arguments['data'] . "/in");
@@ -85,7 +86,7 @@ foreach (new RecursiveIteratorIterator($dir) as $filename => $file) {
 		$dst =  '/' . $path . $name;
 
 		try {
-			$response = $client2->raw($dst, fopen($filename, 'r'));
+			$response = $client2->raw($dst, fopen($filename, 'r'), $options);
 			print "{$name} uploaded" . PHP_EOL;
 		} catch (ClientException $e) {
 			$reason = "Unknown reason";
