@@ -4,8 +4,6 @@ php:
 - '5.6'
 - '5.5'
 - '5.4'
-notifications:
-  email: false
 install:
   - composer install --dev --no-scripts
 script:
@@ -15,9 +13,12 @@ after_script:
   - vendor/bin/test-reporter
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-notifications:
-  slack: keboola:atHihCm3qSPtAy0EowLA5WjD
 addons:
   code_climate:
     repo_token:
       secure: "MsQUWSBgCzE3WLhBYyMfPGLe9TREn/M9TAItXIEY9MNOXFG3sJFk7z7mCnQfqCsJwtG7WAI6Ye4tLuO7Bs5GZgo5+ZfGiEWOb9kYgTpgjseHVwU2z1Tm7RP6fFh7kCf4O1ZEYRi/ocYuGhfxKtMau5LM3Z1tNA1e8kClsv1hs/Qwu7x0CxiqlPOenAuIUqcfL3ub3eETLiN3C5Jgo5pbzV3axYpxRylmg1UfgbFKxNOneSYRzoCYZCUEqmlLDwRowdQ990MAjG0iFP0qGn4DisCuFp/PtgSH44MeZMFpUSM1a+LgtELypkVWf3jX8r9ykZFR3ToZpD0//Yk5+vdvVKGd+gnrIA6P72NTkDMi3gEgDDrl9m2wW7GwJUveH+28OepDxS4g8UPcrMuACCV+BdwU8WWzq2SDgK206vANcHfc78oSOb7b8auybzehMG9qbQSAojihV0j18WmU1OVA786w7VqL/+FH9lCfNAx+n0DMoarMhmbOEo3E8emhzWewVUL4DRu8LhuAQkOKNgbU0ZKtWPYe9bj1LRfSAmHxkwTsXHy3DbWhrwygOJ936T1QVZfgv0rzmcQkIUJrnpvTHrdNZ+MuWX4OxWvFNs6xHNZNc7mlYayVlohV8ovGXaw1YR6xt3ZtJUgT+aRkchQqa3iXsCMsVZUmHYFJITBpAEc="
+
+notifications:
+  email: false
+  slack:
+    secure: VJufBS64PDm23lIe4gjRiLqAys/pHtc4dy5ePtf2K2vyrgHjxkpJyr47qZVD6N6CbPJoMDva0lFtV+Zv697MKbK5wxeS96USF53bNHppoVXbnHxkYhButPTQYgdtBPAPLYoK6MiOi5/fp4vchPkBJpYzJjpd2pltOcpGRb7+p66mtfHKy8MWJIXa6DNT97bQN9CXNUCVaPGPkgek/Qj6ZXw3CDWOjW3D4BMw48DdT6BmbPzaFXLOEFVmOygg4qtW3J+PKVVdseO5VN59bVbRsqymZTMcGs+fTrHyk9J/Hnrb7xps5kF2Vrk8r8muNqUQwf1p5Jo92RIZ+krm8jyeNoQ82PlnvBA9UCdER1YT+IXSpSWTXLp9uDFU22+7laB/86KM72IQOQX7iv0Wvi1SlD9Zm9vkzDDFu4wk0uIbLmoEli4Uy2CjsmyLjYuHTYdrDbCkHKNtXgSFQeFMe5koomB5NT8UEyZ3oeRWrmkHjNqteptfEkzTSWrukI7qru/l6F2hjjEkQ0Wecw8KSeSEZGRzvNFZ196MWQkKbYmBcbEIZrKoqmVU1BslaT0PqDcecZhbZvWhlvJazzVQCT1FVbg1CltsvGK6TAIco5sUMpnSwoczoQz+G4+eyp+wf4SPSxiXwWpKInpOblHEH4pM1QBddUjsqyaB5iEjPq9mMAA=
