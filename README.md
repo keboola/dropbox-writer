@@ -1,4 +1,6 @@
-# Keboola Dropbox Writer
+# Deprecated
+
+Replaced by https://github.com/keboola/dropbox-writer-v2
 
 ## Configuration
 
